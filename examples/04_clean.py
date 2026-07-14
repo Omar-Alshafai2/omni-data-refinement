@@ -1,25 +1,31 @@
 """
-=============================================================================
-[SCENE START]
-HOST (Voiceover): 
-"Alright, this is the big one. In previous videos, we learned how to detect 
-issues using `.health()`. But detecting issues is only half the battle. 
-Usually, you'd have to spend the next two hours writing custom pandas code 
-to impute missing values, drop duplicates, and fix mixed data types."
+OMR Example 04: Automatic Cleaning
+=====================================
+.clean() runs OMR's intelligent cleaning engine, which reads the internal
+health report and applies a set of automatic fixes:
 
-"Not anymore. OMR comes with an intelligent, one-click cleaning engine."
-=============================================================================
+  - Missing numeric values  : imputed using the column median
+  - Missing categorical values : filled with a constant placeholder
+  - Duplicate rows          : dropped, keeping the first occurrence
+  - Mixed-type columns      : cast to a safe, uniform string type
+
+Call .export() after .clean() to retrieve the cleaned data as a standard
+pandas DataFrame.
 """
 
 import pandas as pd
 from omr import Dataset
 
-# We have a terrifyingly messy dataset here
+# A dataset with all four common data quality issues:
+#   - 'id' column contains a duplicated value (2 appears twice)
+#   - 'department' has a missing categorical value
+#   - 'salary' has a missing numeric value
+#   - 'bonus' mixes integers and a string ("500"), causing a type conflict
 df = pd.DataFrame({
-    "id": [1, 2, 2, 4, 5],                        # Duplicates
-    "department": ["HR", "IT", "IT", None, "Sales"], # Missing categorical
-    "salary": [50000, 60000, 60000, None, 90000],    # Missing numeric
-    "bonus": [1000, "500", 500, 2000, 3000]          # Mixed types! (int & str)
+    "id": [1, 2, 2, 4, 5],
+    "department": ["HR", "IT", "IT", None, "Sales"],
+    "salary": [50000, 60000, 60000, None, 90000],
+    "bonus": [1000, "500", 500, 2000, 3000]
 })
 
 print("BEFORE CLEANING:")
@@ -28,35 +34,20 @@ print("-" * 50)
 
 dataset = Dataset(df)
 
-# =============================================================================
-# HOST (Voiceover):
-# "We simply call `dataset.clean()`. Behind the scenes, the Cleaning Engine 
-# reads the health report. It sees the missing numeric values and imputes 
-# them using the median. It sees missing text and uses a constant. It finds 
-# the duplicate rows and drops them. And it resolves the mixed types!"
-# =============================================================================
-
+# Run the automatic cleaning engine.
+# The engine inspects each column's detected issues and applies the
+# appropriate fix. No manual configuration is required.
 print("\nExecuting dataset.clean()...\n")
 dataset.clean()
 
-# =============================================================================
-# HOST (Voiceover):
-# "Let's export the data and look at it now."
-# =============================================================================
-
+# Export the cleaned data back to a pandas DataFrame for downstream use.
 clean_df = dataset.export()
 
 print("AFTER CLEANING:")
 print(clean_df)
 print("-" * 50)
-
-# =============================================================================
-# HOST (Voiceover):
-# "Look at that! The duplicate row for ID 2 is gone. The missing salary was 
-# filled perfectly with the median. The missing department was imputed. And 
-# the 'bonus' column is safely cast to a uniform string type to prevent 
-# crashes."
-#
-# "Hours of data cleaning, reduced to a single method call."
-# [SCENE END]
-# =============================================================================
+# Expected results:
+#   - The duplicate row (id=2) has been removed
+#   - The missing salary has been filled with the column median
+#   - The missing department has been filled with a constant
+#   - The 'bonus' column is now uniformly typed as string

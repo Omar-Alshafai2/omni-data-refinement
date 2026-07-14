@@ -1,21 +1,19 @@
 """
-=============================================================================
-[SCENE START]
-HOST (Voiceover): 
-"Welcome back! In our last video, we used `.clean()` to automatically fix 
-our messy dataset. But in enterprise environments, 'magic' isn't allowed."
+OMR Example 05: Explain Changes (Transformation Log)
+=======================================================
+Every operation performed by .clean() is strictly logged internally.
+.explain_changes() prints this transformation log, providing full
+auditability of what was changed, which columns were affected, how many
+rows were touched, and the reasoning behind each decision.
 
-"Your manager or compliance team is going to ask: 'What exactly did the 
-algorithm change? How many rows were affected? Why was that decision made?'"
-
-"OMR has you covered. Everything the `.clean()` method does is strictly 
-logged. Let's look at `.explain_changes()`."
-=============================================================================
+This is essential in regulated or enterprise environments where data
+transformations must be documented and explainable.
 """
 
 import pandas as pd
 from omr import Dataset
 
+# A small dataset with a duplicate row and a missing numeric value.
 df = pd.DataFrame({
     "id": [1, 2, 2, 4],
     "sales": [100, None, 100, 400]
@@ -23,25 +21,16 @@ df = pd.DataFrame({
 
 dataset = Dataset(df)
 
-# First we run health to detect issues, then clean to fix them
+# Run health detection first, then apply automatic cleaning.
+# Both steps are required before calling explain_changes().
 dataset.health()
 dataset.clean()
 
-# =============================================================================
-# HOST (Voiceover):
-# "Instead of guessing what just happened to our data, we call 
-# `dataset.explain_changes()`. 
-#
-# "This prints a stunning Transformation Log. It tells us the exact column, 
-# the mathematical action taken (like Median Imputation), exactly how many 
-# rows were touched, and the logical reason behind it."
-#
-# "This is complete data lineage and auditability out of the box!"
-# =============================================================================
-
+# Print the transformation log.
+# Each entry in the log describes:
+#   - Column name
+#   - Action taken (e.g., Median Imputation, Duplicate Removal)
+#   - Number of rows affected
+#   - The reason the action was triggered
 print("\nExecuting dataset.explain_changes()...\n")
 dataset.explain_changes()
-
-# =============================================================================
-# [SCENE END]
-# =============================================================================

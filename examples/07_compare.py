@@ -1,48 +1,42 @@
 """
-=============================================================================
-[SCENE START]
-HOST (Voiceover): 
-"Welcome back! Imagine you trained an amazing model last year. It was 
-perfect. But recently, predictions are failing. Why? Because the world 
-changed. Income went up, demographics shifted."
+OMR Example 07: Dataset Comparison and Drift Detection
+=========================================================
+Data drift occurs when the statistical distribution of production data
+shifts away from the distribution the model was trained on. This causes
+model predictions to silently degrade over time without any visible error.
 
-"This is called Data Drift, and it's the silent killer of ML models. Today, 
-we're going to use OMR's `.compare()` method to catch it."
-=============================================================================
+.compare(other_dataset) detects drift between two datasets by running:
+  - Population Stability Index (PSI)
+  - Kolmogorov-Smirnov test
+  - Jensen-Shannon divergence
+
+Each column receives a drift severity: None, Low, Medium, or High.
+A High severity result means the column's distribution has fundamentally
+changed and the model should be retrained.
 """
 
 import pandas as pd
 from omr import Dataset
 
-# Imagine this is the data we trained our model on last year
+# The original training dataset — this represents the data distribution
+# the model learned from during training.
 training_df = pd.DataFrame({
-    "age": [20, 22, 25, 23, 26],
+    "age":    [20, 22, 25, 23, 26],
     "salary": [40000, 42000, 45000, 41000, 46000]
 })
 training_dataset = Dataset(training_df)
 
-# Now imagine this is the data arriving today in production
-# Age has shifted slightly, but salary has doubled!
+# The incoming production dataset — represents data arriving today.
+# 'age' has shifted slightly, but 'salary' has approximately doubled,
+# which would cause significant model degradation.
 production_df = pd.DataFrame({
-    "age": [21, 23, 26, 24, 28],
+    "age":    [21, 23, 26, 24, 28],
     "salary": [80000, 84000, 90000, 82000, 92000]
 })
 production_dataset = Dataset(production_df)
 
-# =============================================================================
-# HOST (Voiceover):
-# "We simply call `compare()` on our training dataset, and pass in the 
-# production dataset. OMR instantly calculates Population Stability Index (PSI), 
-# Kolmogorov-Smirnov tests, and Jensen-Shannon divergence."
-# =============================================================================
-
-print("\nExecuting training_dataset.compare(production_dataset)...\n")
+# Compare the training dataset against the production dataset.
+# The drift report shows each column's PSI score and severity.
+# If 'salary' is flagged as High, the model must be retrained.
+print("Executing training_dataset.compare(production_dataset)...\n")
 training_dataset.compare(production_dataset)
-
-# =============================================================================
-# HOST (Voiceover):
-# "The Drift Report is generated! It clearly shows that 'salary' has suffered 
-# High severity drift, meaning its distribution has fundamentally changed. 
-# It's time to retrain that model!"
-# [SCENE END]
-# =============================================================================

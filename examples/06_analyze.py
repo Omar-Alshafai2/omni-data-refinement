@@ -1,45 +1,34 @@
 """
-=============================================================================
-[SCENE START]
-HOST (Voiceover): 
-"Hello data scientists! Until now, we've focused on basic data quality: 
-nulls, duplicates, and types."
+OMR Example 06: Statistical Analysis
+=======================================
+A dataset can be structurally clean (no nulls, no duplicates, correct types)
+but still be statistically problematic for machine learning models.
 
-"But what if your dataset is clean, but statistically dangerous? What if 
-it has hidden extreme outliers, or highly skewed distributions that will 
-destroy your linear regression models?"
+.analyze() runs OMR's statistics engine to detect deeper issues:
+  - Outliers       : detected using Z-score and IQR methods
+  - Skewness       : identifies heavily skewed distributions that can
+                     bias linear and tree-based models
+  - Multicollinearity : detects highly correlated feature pairs
+  - Class imbalance   : flags target columns with unequal class distribution
 
-"This is where OMR steps into advanced analytics with the `.analyze()` method."
-=============================================================================
+Each detected issue includes a severity level and a recommended action.
 """
 
 import pandas as pd
 from omr import Dataset
 
-# Let's create a dataset that is "clean" (no nulls) but statistically messy
+# A dataset with no missing values but with statistical problems:
+#   - 'age' contains 150, a clear extreme outlier
+#   - 'income' is heavily right-skewed due to the 900000 value
 df = pd.DataFrame({
-    "age": [22, 25, 23, 24, 22, 21, 26, 25, 24, 150], # 150 is an extreme outlier
-    "income": [40000, 42000, 45000, 41000, 43000, 40000, 44000, 46000, 42000, 900000], # Right-skewed
+    "age":    [22, 25, 23, 24, 22, 21, 26, 25, 24, 150],
+    "income": [40000, 42000, 45000, 41000, 43000, 40000, 44000, 46000, 42000, 900000],
 })
 
 dataset = Dataset(df)
 
-# =============================================================================
-# HOST (Voiceover):
-# "Let's run `dataset.analyze()`. The OMR Statistics Engine is now firing up. 
-# It runs Z-score and IQR tests for outliers. It calculates skewness. It 
-# looks for multicollinearity and class imbalances."
-# =============================================================================
-
-print("\nExecuting dataset.analyze()...\n")
+# Run the statistical analysis engine.
+# The output highlights flagged columns with their detected issue,
+# severity, and a concrete recommendation (e.g., "Apply log transform").
+print("Executing dataset.analyze()...\n")
 dataset.analyze()
-
-# =============================================================================
-# HOST (Voiceover):
-# "Look at the report! It explicitly flags the severe skewness in our income 
-# column, and highlights the potential outliers. Not only that, it tells us 
-# exactly what we should consider doing next, like applying a log transform!"
-# 
-# "It's like having a senior data scientist looking over your shoulder."
-# [SCENE END]
-# =============================================================================

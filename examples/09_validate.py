@@ -1,57 +1,48 @@
 """
-=============================================================================
-[SCENE START]
-HOST (Voiceover): 
-"Welcome back! In previous videos, we talked about general data quality. 
-But what about Business Logic? What if an age is technically a valid number, 
-but in your system, users must be over 18?"
+OMR Example 09: Schema Validation
+====================================
+.validate(rules) enforces business logic rules against the dataset.
+It checks that column values satisfy the constraints you define, not just
+that they are structurally valid.
 
-"You need Schema Validation. And OMR's `.validate()` method makes this 
-incredibly strict and incredibly easy."
-=============================================================================
+Rules are defined as a dictionary mapping column names to schema validators
+from the `omr.schemas` module:
+
+  - schemas.PositiveInteger(min, max) : enforces a numeric range
+  - schemas.Email()                   : validates email format via regex
+  - schemas.OneOf(*values)            : restricts to an allowed set of values
+
+.validate() reports exactly which rows failed each rule, the column involved,
+and the invalid value found. This is used for enforcing data contracts at
+pipeline entry points.
 """
 
 import pandas as pd
 from omr import Dataset, schemas
 
+# A user dataset with several business rule violations:
+#   - Row 1: age=17, below the minimum allowed age of 18
+#   - Row 1: email='b.com', missing the '@' character (invalid format)
+#   - Row 3: status='banned', not in the allowed values ('active', 'pending')
 df = pd.DataFrame({
     "user_id": [1, 2, 3, 4],
-    "age": [25, 17, 30, 45],            # 17 is underage
-    "email": ["a@a.com", "b.com", "c@c.com", "d@d.com"], # Invalid email 'b.com'
-    "status": ["active", "active", "pending", "banned"]  # 'banned' is not allowed
+    "age":     [25, 17, 30, 45],
+    "email":   ["a@a.com", "b.com", "c@c.com", "d@d.com"],
+    "status":  ["active", "active", "pending", "banned"]
 })
 
 dataset = Dataset(df)
 
-# =============================================================================
-# HOST (Voiceover):
-# "We import `schemas` from OMR. Then we build a dictionary. We map our 
-# column names to specific rules. 
-# 
-# For 'age', we enforce a PositiveInteger with a minimum of 18.
-# For 'email', we use the built-in Email regex validator.
-# For 'status', we use OneOf to restrict values to an allowed list."
-# =============================================================================
-
+# Define the business rules as a schema dictionary.
+# Each key is a column name; each value is a validator instance.
 business_rules = {
-    "age": schemas.PositiveInteger(min=18, max=120),
-    "email": schemas.Email(),
+    "age":    schemas.PositiveInteger(min=18, max=120),
+    "email":  schemas.Email(),
     "status": schemas.OneOf("active", "pending")
 }
 
-# =============================================================================
-# HOST (Voiceover):
-# "Now we run `.validate()`. OMR evaluates every single row against these 
-# strict rules."
-# =============================================================================
-
-print("\nExecuting dataset.validate()...\n")
+# Run validation against all defined rules.
+# The output lists each failing row with the column name, the rule that
+# was violated, and the actual value that caused the failure.
+print("Executing dataset.validate()...\n")
 dataset.validate(business_rules)
-
-# =============================================================================
-# HOST (Voiceover):
-# "Look at the terminal! It caught the 17-year-old, it caught the badly 
-# formatted email, and it caught the invalid 'banned' status. It tells you 
-# exactly which rows failed so you can go fix them!"
-# [SCENE END]
-# =============================================================================

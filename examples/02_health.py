@@ -1,61 +1,45 @@
 """
-=============================================================================
-[SCENE START]
-HOST (Voiceover): 
-"Welcome to part two! In our last video, we used `.summary()` to get a quick 
-pulse check. But what if that score is low? What if we need to know *exactly* 
-what is wrong with our data before feeding it to a machine learning model?"
+OMR Example 02: Health Check
+==============================
+When the summary health score is low, use `.health()` to get a detailed
+breakdown of exactly what is wrong with the data.
 
-"This is where OMR truly shines. We're going to use the `.health()` method.
-This doesn't just check for nulls. It evaluates your data across the 
-5 Pillars of Data Quality: Completeness, Uniqueness, Consistency, Validity, 
-and Conformity."
-=============================================================================
+.health() evaluates data across five quality pillars:
+  - Completeness  : Are there missing values?
+  - Uniqueness    : Are there duplicate rows or IDs?
+  - Consistency   : Are data types uniform within each column?
+  - Validity      : Are values within acceptable ranges?
+  - Conformity    : Do values conform to expected patterns?
+
+The method returns a HealthReport object that can be used programmatically
+to enforce quality gates in CI/CD pipelines.
 """
 
 import pandas as pd
 from omr import Dataset
 
-# Create a dataset with numerous data quality issues
+# A dataset with multiple data quality issues:
+#   - customer_id 3 appears twice (duplicate)
+#   - age -5 is logically invalid; 120 is an extreme outlier; None is missing
+#   - salary column mixes integers and strings ("70k"), causing type inconsistency
 df = pd.DataFrame({
-    "customer_id": [1, 2, 3, 3, 5],                 # Duplicated ID
-    "age": [25, 30, -5, 120, None],                 # Invalid ages (-5, 120), missing value
-    "salary": [50000, 60000, "70k", 80000, 90000],  # Mixed types (int and string)
-    "is_active": [1, 0, 1, 0, 1]                    
+    "customer_id": [1, 2, 3, 3, 5],
+    "age": [25, 30, -5, 120, None],
+    "salary": [50000, 60000, "70k", 80000, 90000],
+    "is_active": [1, 0, 1, 0, 1]
 })
 
 dataset = Dataset(df)
 
-# =============================================================================
-# HOST (Voiceover):
-# "Here we have a dataset with duplicate rows, missing values, extreme 
-# outliers (an age of -5?), and mixed data types in the salary column."
-#
-# "If we passed this into Scikit-Learn right now, it would crash instantly."
-# 
-# "Let's call `dataset.health()` and see what the engine discovers."
-# =============================================================================
-
-print("\nExecuting dataset.health()...\n")
+# Run the full health check across all five quality pillars.
+# The output includes a score out of 100, a per-pillar breakdown,
+# and a list of specific issues with severity levels and recommended fixes.
+print("Executing dataset.health()...\n")
 report = dataset.health()
 
-# =============================================================================
-# HOST (Voiceover):
-# "Look at that beautiful output! We get a unified Health Score out of 100, 
-# and a detailed breakdown across the five quality pillars."
-# 
-# "But more importantly, OMR lists out specific, actionable issues. It tells 
-# you exactly which columns have problems, what the severity is, and gives 
-# you a clear recommendation on how to fix it."
-#
-# "You can even access the underlying report object programmatically to fail 
-# a CI/CD pipeline if the score drops below a certain threshold!"
-# =============================================================================
-
-print(f"\n[Programmatic Access] The raw score is: {report.score}")
+# The report object can be accessed programmatically.
+# Use the score to enforce a quality gate: if the score is below 80,
+# flag the dataset as unfit and stop the pipeline.
+print(f"\n[Programmatic Access] Raw score: {report.score}")
 if report.score < 80:
-    print("[Pipeline Alert] Health score is too low! Data needs cleaning.")
-
-# =============================================================================
-# [SCENE END]
-# =============================================================================
+    print("[Pipeline Alert] Health score is too low. Data requires cleaning before use.")
