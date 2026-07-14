@@ -144,4 +144,4 @@ class MedicalPlugin:
 
 ## License
 
-MIT License. See `LICENSE` for details.
+BSD 3-Clause License. Copyright (c) 2026 Omar Alshafai. See `LICENSE` for details.
