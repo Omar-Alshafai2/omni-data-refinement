@@ -4,13 +4,13 @@ build-backend = "hatchling.build"
 
 [project]
 name = "omni-data-refinement"
-version = "0.3.1"
-description = "Omni Data Refinement — The standard framework for dataset quality, validation, and monitoring."
+version = "0.3.2"
+description = "OMR: Omni Data Refinement - The standard framework for dataset quality, validation, and monitoring."
 readme = "README.md"
 requires-python = ">=3.9"
-license = { text = "MIT" }
+license = { text = "BSD-3-Clause" }
 authors = [
-    { name = "OMR Team", email = "hello@example.com" }
+    { name = "Omar Alshafai", email = "omar.alshafai@example.com" }
 ]
 keywords = [
     "data quality",
@@ -36,10 +36,10 @@ stats = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/omr/omr"
-Documentation = "https://github.com/omr/omr#readme"
-Repository = "https://github.com/omr/omr.git"
-Issues = "https://github.com/omr/omr/issues"
+Homepage = "https://github.com/Omar-Alshafai2/omni-data-refinement"
+Documentation = "https://Omar-Alshafai2.github.io/omni-data-refinement/"
+Repository = "https://github.com/Omar-Alshafai2/omni-data-refinement.git"
+Issues = "https://github.com/Omar-Alshafai2/omni-data-refinement/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["omr"]
