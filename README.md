@@ -1,8 +1,16 @@
 # OMR — Omni Data Refinement
 
+[![PyPI Version](https://img.shields.io/pypi/v/omni-data-refinement?color=blue&label=PyPI&logo=pypi&logoColor=white)](https://pypi.org/project/omni-data-refinement/)
+[![Python Versions](https://img.shields.io/pypi/pyversions/omni-data-refinement?logo=python&logoColor=white)](https://pypi.org/project/omni-data-refinement/)
+[![PyPI Downloads](https://img.shields.io/pypi/dm/omni-data-refinement?color=brightgreen&label=Downloads%2FMonth&logo=pypi&logoColor=white)](https://pypi.org/project/omni-data-refinement/)
+[![License: BSD 3-Clause](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
+[![GitHub Stars](https://img.shields.io/github/stars/Omar-Alshafai2/omni-data-refinement?style=social)](https://github.com/Omar-Alshafai2/omni-data-refinement/stargazers)
+[![Documentation](https://img.shields.io/badge/docs-online-brightgreen?logo=readthedocs&logoColor=white)](https://Omar-Alshafai2.github.io/omni-data-refinement/)
+[![GitHub Issues](https://img.shields.io/github/issues/Omar-Alshafai2/omni-data-refinement?logo=github)](https://github.com/Omar-Alshafai2/omni-data-refinement/issues)
+
 OMR is a pure Python framework for dataset quality, validation, profiling, monitoring, and reliability.
 
-The goal is to become the standard tool developers use immediately after loading a dataset, similar to how Pandas is used for data manipulation. 
+The goal is to become the standard tool developers use immediately after loading a dataset, similar to how Pandas is used for data manipulation.
 
 OMR is designed to be **Pure Python, Open Source, Modular, Extensible, Enterprise-ready**, and entirely independent of external AI APIs or LLMs.
 
