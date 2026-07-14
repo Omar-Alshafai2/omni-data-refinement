@@ -1,0 +1,45 @@
+{
+  "metadata": {
+    "num_rows": 9,
+    "num_cols": 7,
+    "missing_cells": 0,
+    "missing_pct": 4.29,
+    "duplicate_rows": 1,
+    "memory_mb": 0.0019,
+    "created_at": "2026-07-04T04:15:18.613605",
+    "source": null
+  },
+  "health_score": 90.0,
+  "transformations": [
+    {
+      "step": 1,
+      "op": "Imputation (Constant)",
+      "col": "name",
+      "reason": "Categorical missing values imputed with 'Unknown'."
+    },
+    {
+      "step": 2,
+      "op": "Imputation (Median)",
+      "col": "age",
+      "reason": "Numeric missing values imputed with median."
+    },
+    {
+      "step": 3,
+      "op": "Imputation (Median)",
+      "col": "salary",
+      "reason": "Numeric missing values imputed with median."
+    },
+    {
+      "step": 4,
+      "op": "Type Cast (String)",
+      "col": "score",
+      "reason": "Mixed types cast to uniform string."
+    },
+    {
+      "step": 5,
+      "op": "Row Deletion",
+      "col": "Dataset",
+      "reason": "Exact duplicate rows removed."
+    }
+  ]
+}

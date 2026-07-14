@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OMR — Omni Data Refinement Documentation</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
+
+        :root {
+            --primary: #4F46E5;
+            --primary-dark: #3730A3;
+            --secondary: #10B981;
+            --bg-color: #ffffff;
+            --text-color: #1F2937;
+            --text-muted: #6B7280;
+            --border-color: #E5E7EB;
+            --code-bg: #1E1E1E;
+            --code-text: #D4D4D4;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Print Specific */
+        @media print {
+            body {
+                font-size: 11pt;
+            }
+            .page-break {
+                page-break-before: always;
+            }
+            a {
+                text-decoration: none;
+                color: var(--primary);
+            }
+            .no-break {
+                page-break-inside: avoid;
+            }
+            header {
+                padding: 4rem 2rem;
+            }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 4rem;
+        }
+
+        header {
+            background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+            color: white;
+            padding: 4rem 2rem;
+            border-radius: 12px;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        header p {
+            margin-top: 1rem;
+            font-size: 1.2rem;
+            font-weight: 300;
+            opacity: 0.9;
+        }
+
+        h2 {
+            color: var(--primary-dark);
+            font-size: 2rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            color: #111827;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        h4 {
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+        }
+
+        ul {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Code Blocks */
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 1.2rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+            background-color: #F3F4F6;
+            color: #EF4444;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre code {
+            background-color: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        .keyword { color: #569CD6; }
+        .string { color: #CE9178; }
+        .comment { color: #6A9955; font-style: italic; }
+        .function { color: #DCDCAA; }
+
+        /* Tables/Boxes */
+        .info-box {
+            background-color: #F8FAFC;
+            border-left: 4px solid var(--primary);
+            padding: 1rem 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .api-method {
+            margin-bottom: 2.5rem;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: #FAFAFA;
+        }
+
+        .api-method h4 {
+            margin-top: 0;
+            font-size: 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            color: #111827;
+        }
+        
+        .api-method h4 code {
+            background: none;
+            color: var(--primary);
+            font-size: 1.25rem;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+        
+        .badge.analytics { background-color: #8B5CF6; }
+        .badge.cleaning { background-color: #10B981; }
+        .badge.ops { background-color: #F59E0B; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>OMR</h1>
+        <p>Omni Data Refinement &mdash; Professional API Reference</p>
+    </header>
+
+    <div class="info-box">
+        <strong>Overview:</strong> Welcome to the definitive API reference for OMR. This documentation covers every class, method, argument, and schema available in the library to help you build robust data intelligence pipelines.
+    </div>
+
+    <h2>1. Core API: <code>Dataset</code></h2>
+    <p>The <code>Dataset</code> class is the main entry point to OMR. It wraps a Pandas DataFrame and attaches intelligent engines to it.</p>
+
+<pre><span class="keyword">from</span> omr <span class="keyword">import</span> Dataset
+<span class="keyword">import</span> pandas <span class="keyword">as</span> pd
+
+df = pd.read_csv(<span class="string">"data.csv"</span>)
+dataset = Dataset(df)</pre>
+
+    <h3 class="page-break">Core & Quality Assessment</h3>
+
+    <div class="api-method no-break">
+        <h4><code>Dataset.summary()</code></h4>
+        <p>Prints a highly optimized, single-line summary of your dataset. Ideal for quick pulse checks.</p>
+        <ul>
+            <li><strong>Returns:</strong> <code>Dataset</code> (returns self for chaining)</li>
+            <li><strong>Under the hood:</strong> Computes essential metadata (shape, total missing cells, duplicate rows) and runs a fast heuristic health score.</li>
+        </ul>
+<pre>dataset.summary()
+<span class="comment"># > [Dataset] 1000 rows × 5 cols | Missing: 12 (1.2%) | Duplicates: 0 | Health: 98.5/100</span></pre>
+    </div>
+
+    <div class="api-method no-break">
+        <h4><code>Dataset.health()</code></h4>
+        <p>Executes the comprehensive 5-Pillar Data Quality assessment (Completeness, Uniqueness, Consistency, Validity, Conformity).</p>
+        <ul>
+            <li><strong>Returns:</strong> <code>HealthReport</code> object containing the <code>.score</code> and <code>.issues</code> list.</li>
+            <li><strong>Under the hood:</strong> Spawns a <code>HealthEngine</code> that analyzes null density, duplication rates, and type uniformity.</li>
+        </ul>
+<pre>report = dataset.health()
+<span class="function">print</span>(<span class="string">f"Dataset Health: {report.score}/100"</span>)</pre>
+    </div>
+
+    <div class="api-method no-break">
+        <h4><code>Dataset.profile()</code></h4>
+        <p>Generates a full statistical profile for every column in the dataset.</p>
+        <ul>
+            <li><strong>Returns:</strong> <code>Dataset</code> (returns self for chaining)</li>
+            <li><strong>Under the hood:</strong> Extracts data types, missing counts, unique cardinalities, means, modes, minimums, and maximums. Replaces Pandas <code>.info()</code>.</li>
+        </ul>
+<pre>dataset.profile()</pre>
+    </div>
+
+    <h3 class="page-break">Cleaning & Transformation</h3>
+
+    <div class="api-method no-break">
+        <span class="badge cleaning">Transformation</span>
+        <h4><code>Dataset.clean()</code></h4>
+        <p>Automatically resolves all data quality issues detected during the <code>health()</code> check.</p>
+        <ul>
+            <li><strong>Returns:</strong> <code>Dataset</code> (returns self for chaining)</li>
+            <li><strong>Under the hood:</strong> Intelligently imputes missing values (using mode for categorical, median/mean for continuous), drops pure duplicate rows, and standardizes formats.</li>
+        </ul>
+<pre>dataset.health()  <span class="comment"># Identifies the issues</span>
+dataset.clean()   <span class="comment"># Fixes them automatically</span></pre>
+    </div>
+
+    <div class="api-method no-break">
+        <h4><code>Dataset.explain_changes()</code></h4>
+        <p>Prints a detailed "Transformation Log" showing exactly what <code>clean()</code> (or any other mutation) changed.</p>
+        <ul>
+            <li><strong>Returns:</strong> <code>Dataset</code> (returns self for chaining)</li>
+            <li><strong>Under the hood:</strong> Reads from <code>DatasetMetadata.transformations</code> to provide an auditable log of operations.</li>
+        </ul>
+<pre>dataset.clean()
+dataset.explain_changes()</pre>
+    </div>
+
+    <h3 class="page-break">Advanced Analytics</h3>
+
+    <div class="api-method no-break">
+        <span class="badge analytics">Analytics</span>
+        <h4><code>Dataset.analyze()</code></h4>
+        <p>Runs deep statistical analysis to detect complex machine learning hazards.</p>
+        <ul>
+            <li><strong>Returns:</strong> <code>Dataset</code> (returns self for chaining)</li>
+            <li><strong>Under the hood:</strong> The <code>StatisticsEngine</code> detects extreme outliers (via IQR/Z-score), highly skewed distributions, multicollinearity between features, and class imbalances.</li>
+        </ul>
+<pre>dataset.analyze()</pre>
+    </div>
+
+    <div class="api-method no-break">
+        <span class="badge analytics">Analytics</span>
+        <h4><code>Dataset.compare(other: Dataset)</code></h4>
+        <p>Detects data drift by comparing the statistical distributions of the current dataset against a reference dataset.</p>
+        <ul>
+            <li><strong>Arguments:</strong> <code>other</code> (The reference dataset, e.g., historical data).</li>
+            <li><strong>Returns:</strong> <code>Dataset</code> (returns self for chaining)</li>
+            <li><strong>Under the hood:</strong> Utilizes Population Stability Index (PSI), Kolmogorov-Smirnov (KS) Tests, and Jensen-Shannon Divergence.</li>
+        </ul>
+<pre>prod_data = Dataset(pd.read_csv(<span class="string">"prod.csv"</span>))
+dataset.compare(prod_data)</pre>
+    </div>
+
+    <div class="api-method no-break">
+        <h4><code>Dataset.explain(issue: str)</code></h4>
+        <p>Acts as a built-in AI Data Science tutor.</p>
+        <ul>
+            <li><strong>Arguments:</strong> <code>issue</code> (The name of the statistical issue, e.g., <code>"data_leakage"</code>, <code>"class_imbalance"</code>).</li>
+            <li><strong>Returns:</strong> <code>dict</code> containing explanation keys.</li>
+        </ul>
+<pre>dataset.explain(<span class="string">"class_imbalance"</span>)</pre>
+    </div>
+
+    <h3 class="page-break">Schema Validation</h3>
+
+    <div class="api-method no-break">
+        <h4><code>Dataset.validate(schema: Dict)</code></h4>
+        <p>Enforces strict business rules against the dataset.</p>
+        <ul>
+            <li><strong>Arguments:</strong> <code>schema</code> (A dictionary mapping column names to OMR schema constraints).</li>
+            <li><strong>Returns:</strong> <code>Dataset</code> (returns self for chaining)</li>
+        </ul>
+<pre><span class="keyword">from</span> omr <span class="keyword">import</span> schemas
+rules = {
+    <span class="string">"age"</span>: schemas.PositiveInteger(max=120),
+    <span class="string">"email"</span>: schemas.Email()
+}
+dataset.validate(rules)</pre>
+    </div>
+
+    <h3 class="page-break">Ops, Versioning & Export</h3>
+
+    <div class="api-method no-break">
+        <span class="badge ops">Ops</span>
+        <h4><code>Dataset.snapshot(name: str = "", description: str = "")</code></h4>
+        <p>Saves a checkpoint of your dataset's current state in memory.</p>
+        <ul>
+            <li><strong>Returns:</strong> <code>int</code> (The unique Version ID).</li>
+        </ul>
+<pre>v_id = dataset.snapshot(name=<span class="string">"v1"</span>, description=<span class="string">"Pre-cleaning state"</span>)</pre>
+    </div>
+
+    <div class="api-method no-break">
+        <span class="badge ops">Ops</span>
+        <h4><code>Dataset.rollback(version_id: int)</code></h4>
+        <p>Reverts the dataset back to a previous snapshot in memory.</p>
+        <ul>
+            <li><strong>Returns:</strong> <code>Dataset</code> (returns self for chaining)</li>
+        </ul>
+<pre>dataset.rollback(1)</pre>
+    </div>
+
+    <div class="api-method no-break">
+        <span class="badge ops">Ops</span>
+        <h4><code>Dataset.export()</code></h4>
+        <p>Returns the cleaned, refined underlying Pandas DataFrame.</p>
+        <ul>
+            <li><strong>Returns:</strong> <code>pd.DataFrame</code></li>
+        </ul>
+<pre>clean_df = dataset.export()
+model.fit(clean_df)</pre>
+    </div>
+
+    <h2 class="page-break">2. Validation Schemas: <code>omr.schemas</code></h2>
+    <p>OMR provides built-in constraint types for strict schema validation. Every schema accepts a <code>not_null</code> boolean argument (default: <code>True</code>), which dictates whether missing values are permitted.</p>
+
+    <ul>
+        <li><strong><code>PositiveInteger(min=1, max=None)</code></strong>: Validates that values are integers ≥ min and ≤ max.</li>
+        <li><strong><code>PositiveFloat(min=0.0, max=None)</code></strong>: Validates that values are floats > min and ≤ max.</li>
+        <li><strong><code>NonNegative()</code></strong>: Validates that all numerical values are ≥ 0.</li>
+        <li><strong><code>OneOf(*values)</code></strong>: Validates that values belong to an explicit allowed set (e.g. <code>OneOf("active", "inactive")</code>).</li>
+        <li><strong><code>Email()</code></strong>: Validates standard email address formats via Regex.</li>
+        <li><strong><code>Regex(pattern: str)</code></strong>: Validates strings against a custom Regular Expression pattern.</li>
+        <li><strong><code>NotNull()</code></strong>: Ensures the column contains absolutely no missing or null values.</li>
+        <li><strong><code>MinLength(length: int)</code></strong>: Ensures string lengths are at least <code>length</code> characters long.</li>
+        <li><strong><code>MaxLength(length: int)</code></strong>: Ensures string lengths do not exceed <code>length</code> characters.</li>
+    </ul>
+
+    <h2>3. Continuous Monitoring: <code>Monitor</code></h2>
+    <p>The <code>Monitor</code> class is used in production pipelines to track dataset health over time and issue alerts when anomalies occur.</p>
+
+    <div class="api-method no-break">
+        <h4><code>Monitor.watch(dataset: Dataset)</code></h4>
+        <p>Registers a baseline dataset to establish the mathematical "norm" (means, volumes, null frequencies).</p>
+<pre><span class="keyword">from</span> omr <span class="keyword">import</span> Monitor
+monitor = Monitor()
+monitor.watch(historical_dataset)</pre>
+    </div>
+
+    <div class="api-method no-break">
+        <h4><code>Monitor.check(new_data: pd.DataFrame)</code></h4>
+        <p>Evaluates incoming data against the registered baseline to detect sudden drops in volume, massive shifts in column means, or spikes in missing values.</p>
+        <ul>
+            <li><strong>Returns:</strong> <code>list[Alert]</code></li>
+        </ul>
+<pre>alerts = monitor.check(new_daily_batch)
+<span class="keyword">for</span> alert <span class="keyword">in</span> alerts:
+    <span class="function">print</span>(<span class="string">f"[{alert.severity}] {alert.check}: {alert.message}"</span>)</pre>
+    </div>
+
+</div>
+
+</body>
+</html>

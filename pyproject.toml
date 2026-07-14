@@ -1,0 +1,45 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "omni-data-refinement"
+version = "0.3.1"
+description = "Omni Data Refinement — The standard framework for dataset quality, validation, and monitoring."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [
+    { name = "OMR Team", email = "hello@example.com" }
+]
+keywords = [
+    "data quality",
+    "data cleaning",
+    "data validation",
+    "drift detection",
+    "machine learning",
+    "data science"
+]
+dependencies = [
+    "pandas>=2.0.0",
+    "numpy>=1.24.0",
+    "rich>=13.0.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-cov>=4.0.0"
+]
+stats = [
+    "scipy>=1.10.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/omr/omr"
+Documentation = "https://github.com/omr/omr#readme"
+Repository = "https://github.com/omr/omr.git"
+Issues = "https://github.com/omr/omr/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["omr"]
